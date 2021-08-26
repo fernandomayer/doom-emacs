@@ -34,8 +34,8 @@
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration,
 ;; email clients, file templates and snippets.
-(setq user-full-name "Walmes Zeviani"
-      user-mail-address "walmeszeviani")
+(setq user-full-name "Fernando Mayer"
+      user-mail-address "fernandomayer")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom.
 ;; Here are the three important ones:
@@ -214,41 +214,41 @@
 ;; http://ergoemacs.org/emacs/emacs_byte_compile.html
 ;; (byte-recompile-directory "~/.emacs.d/elpa/bookmark+" 0 t)
 
-(use-package! bookmark+
-  :init
-  (setq bookmark-default-file "~/Dropbox/bookmarks"
-        bookmark-save-flag 1)
-  :config
-  ;; ATTENTION: for some unknown reason, the keymap must be defined in
-  ;; `:config' because in `:bind' the bookmark list buffer have a
-  ;; different appearance.
-  (progn
-    ;; Create an autonamed bookmark.
-    (global-set-key (kbd "<C-f3>")
-                    'bmkp-toggle-autonamed-bookmark-set/delete)
-    ;; Go to the next bookmark in file.
-    (global-set-key (kbd "<f3>")
-                    'bmkp-next-bookmark-this-file/buffer-repeat)
-    ;; Go to the previous bookmark in file.
-    (global-set-key (kbd "<f4>")
-                    'bmkp-previous-bookmark-this-file/buffer-repeat)
-    ;; Toggle temporary/permanent bookmark.
-    (global-set-key (kbd "<S-f3>")
-                    'bmkp-toggle-temporary-bookmark)
-    ))
+;; (use-package! bookmark+
+;;   :init
+;;   (setq bookmark-default-file "~/Dropbox/bookmarks"
+;;         bookmark-save-flag 1)
+;;   :config
+;;   ;; ATTENTION: for some unknown reason, the keymap must be defined in
+;;   ;; `:config' because in `:bind' the bookmark list buffer have a
+;;   ;; different appearance.
+;;   (progn
+;;     ;; Create an autonamed bookmark.
+;;     (global-set-key (kbd "<C-f3>")
+;;                     'bmkp-toggle-autonamed-bookmark-set/delete)
+;;     ;; Go to the next bookmark in file.
+;;     (global-set-key (kbd "<f3>")
+;;                     'bmkp-next-bookmark-this-file/buffer-repeat)
+;;     ;; Go to the previous bookmark in file.
+;;     (global-set-key (kbd "<f4>")
+;;                     'bmkp-previous-bookmark-this-file/buffer-repeat)
+;;     ;; Toggle temporary/permanent bookmark.
+;;     (global-set-key (kbd "<S-f3>")
+;;                     'bmkp-toggle-temporary-bookmark)
+;;     ))
 
 ;;----------------------------------------------------------------------
 ;; Visible bookmarks. Easy movement.
 ;; https://marmalade-repo.org/packages/bm
 
-(use-package! bm
-  :config
-  (setq bm-marker 'bm-marker-left
-        bm-highlight-style 'bm-highlight-only-fringe)
-  :bind
-  (("<C-f2>" . bm-toggle)
-   ("<f2>"   . bm-next)
-   ("<S-f2>" . bm-previous)))
+;; (use-package! bm
+;;   :config
+;;   (setq bm-marker 'bm-marker-left
+;;         bm-highlight-style 'bm-highlight-only-fringe)
+;;   :bind
+;;   (("<C-f2>" . bm-toggle)
+;;    ("<f2>"   . bm-next)
+;;    ("<S-f2>" . bm-previous)))
 
 ;;----------------------------------------------------------------------
 ;; Folding code blocks based on indentation.
@@ -641,18 +641,18 @@
 ;;    set. (Or enable `conda-env-autoactivate-mode' to automatically
 ;;    activate it.)
 
-(use-package! conda
-  :init
-  (setq conda-anaconda-home (expand-file-name "~/anaconda"))
-  (setq conda-env-home-directory (expand-file-name "~/anaconda"))
-  :config
-  (conda-env-initialize-interactive-shells)
-  (conda-env-initialize-eshell))
-
-(use-package! anaconda-mode
-  :init
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+;; (use-package! conda
+;;   :init
+;;   (setq conda-anaconda-home (expand-file-name "~/anaconda"))
+;;   (setq conda-env-home-directory (expand-file-name "~/anaconda"))
+;;   :config
+;;   (conda-env-initialize-interactive-shells)
+;;   (conda-env-initialize-eshell))
+;;
+;; (use-package! anaconda-mode
+;;   :init
+;;   (add-hook 'python-mode-hook 'anaconda-mode)
+;;   (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 ;; IMPORTANT: check the benefits of lsp-jedi.
 ;; https://github.com/fredcamps/lsp-jedi
@@ -692,7 +692,7 @@
    mode
    '(("\\(^\\|[[:space:]]\\)@[[:alnum:]_.]+\\>"
       0 'font-lock-function-name-face t))
-   ;; @walmes, @param, @return
+   ;; @param, @return
    ))
 
 ;;----------------------------------------------------------------------
@@ -742,7 +742,7 @@
   (add-to-list 'hl-todo-keyword-faces '("OKAY"        success bold))
   (add-to-list 'hl-todo-keyword-faces '("GOOD"        success bold))
   (add-to-list 'hl-todo-keyword-faces '("SOLVED"      success bold))
-  (add-to-list 'hl-todo-keyword-faces '("WALMES"    . hl-todo-good-words))
+  ;; (add-to-list 'hl-todo-keyword-faces '("WALMES"    . hl-todo-good-words))
   )
 
 ;;----------------------------------------------------------------------
