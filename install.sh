@@ -1,16 +1,13 @@
 #-----------------------------------------------------------------------
 # Install Doom-Emacs and add personal configuration.
 
-# Keep a copy of `.emacs.d/`.
-mv -v ~/.emacs.d ~/OLD.emacs.d/
-
 # Install Doom-Emacs.
 git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
 ~/.emacs.d/bin/doom install
 
 # Brings my persional configuration.
 rm -rf ~/.doom.d/
-git clone git@github.com:walmes/doom-emacs.git ~/.doom.d/
+git clone git@github.com:fernandomayer/doom-emacs.git ~/.doom.d/
 
 # Upgrade Doom-emacs.
 ~/.emacs.d/bin/doom upgrade
@@ -52,7 +49,4 @@ git clone git@github.com:walmes/doom-emacs.git ~/.doom.d/
 # sudo apt-get install clangd-10
 
 # Requirements for `ess` module.
-LIB="/usr/lib/R/site-library"
-REPOS="http://cran-r.c3sl.ufpr.br/"
-CMD="lib <- \"$LIB\"; repos <- \"$REPOS\"; install.packages(c(\"lintr\", \"languageserver\"), dependencies = TRUE, lib = lib, repos = repos)"
-sudo Rscript -e "$CMD"
+Rscript -e 'install.packages(c("lintr", "languageserver"), dependencies = TRUE)'
