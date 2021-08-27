@@ -47,13 +47,19 @@
 ;;
 ;; They all accept either a font-spec, font string ("Input Mono-12"), or
 ;; xlfd font string. You generally only need these two:
-;; (setq doom-font
-;;       (font-spec :family "monospace"
-;;                  :size 12
-;;                  :weight 'semi-light)
-;;       doom-variable-pitch-font
-;;       (font-spec :family "sans"
-;;                  :size 13))
+(setq doom-font
+      (font-spec :family "Fira Mono"
+                 :size 17
+                 :weight 'semi-light)
+      doom-variable-pitch-font
+      (font-spec :family "Fira Sans"
+                 :size 13))
+
+;; (setq doom-font (font-spec :family "JetBrains Mono" :size 24)
+;;       doom-big-font (font-spec :family "JetBrains Mono" :size 36)
+;;       doom-variable-pitch-font (font-spec :family "Overpass" :size 24)
+;;       doom-unicode-font (font-spec :family "JuliaMono")
+;;       doom-serif-font (font-spec :family "IBM Plex Mono" :weight 'light))
 
 ;; There are two ways to load a theme. Both assume the theme is
 ;; installed and available. You can either set `doom-theme' or manually
@@ -95,6 +101,7 @@
 ;; Basic definitions.
 ;;----------------------------------------------------------------------
 
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 (global-hl-line-mode 1)             ;; Highlight the cursor line.
 (visual-line-mode 1)                ;; Screen lines, not logical lines.
 (show-paren-mode 1)                 ;; Highlight matching pairs.
@@ -112,6 +119,8 @@
 (setq tab-always-indent t)
 (setq-default indent-tabs-mode nil) ;; Spaces to indent.
 (setq-default fill-column 72)       ;; Column width.
+(setq-default kill-ring-max 2)      ;; Clipboard stores less to save mem
+(setq-default major-mode 'markdown-mode) ;; Start markdown rather then fundamental
 
 ;; Highlight whitespace.
 (global-whitespace-mode +1)
@@ -126,16 +135,60 @@
 ;; When scrolling with the cursor, show 4 lines above/below.
 (setq scroll-margin 5)
 
-(dolist
-    (mode '(messages-buffer-mode-hook
-            comint-mode-hook
-            term-mode-hook
-            erc-mode-hook
-            inferior-ess-mode-hook
-            eshell-mode-hook
-            inferior-python-mode-hook))
-  (set (make-local-variable 'scroll-margin) 0)
-  )
+(add-hook 'messages-buffer-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+(add-hook 'comint-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+(add-hook 'term-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+(add-hook 'erc-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+(add-hook 'inferior-ess-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+(add-hook 'eshell-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+(add-hook 'inferior-python-mode-hook
+                  (lambda ()
+                    (setq-local scroll-margin 0)))
+
+;; (defun unset-scroll-margin () (setq-local scroll-margin 0))
+;; (dolist (hook '(messages-buffer-mode-hook
+;;                comint-mode-hook
+;;                term-mode-hook
+;;                erc-mode-hook
+;;                inferior-ess-mode-hook
+;;                eshell-mode-hook
+;;                inferior-python-mode-hook)
+;;              (add-hook hook 'unset-scroll-margin)))
+
+
+;; (add-hook '(messages-buffer-mode-hook
+;;             comint-mode-hook
+;;             term-mode-hook
+;;             erc-mode-hook
+;;             inferior-ess-mode-hook
+;;             eshell-mode-hook
+;;             inferior-python-mode-hook)
+;;           (lambda ()
+;;             (make-local-variable 'scroll-margin)
+;;             (setq scroll-margin 0)))
+
+;; (dolist
+;;     (mode '(messages-buffer-mode-hook
+;;             comint-mode-hook
+;;             term-mode-hook
+;;             erc-mode-hook
+;;             inferior-ess-mode-hook
+;;             eshell-mode-hook
+;;             inferior-python-mode-hook))
+;;   (set (make-local-variable 'scroll-margin) 0)
+;;   )
 
 ;;----------------------------------------------------------------------
 ;; Key bindings.
@@ -178,6 +231,13 @@
 ;;                (global-set-key (kbd "<M-up>")     'backward-list)
 ;;                (global-set-key (kbd "<M-S-up>")   'backward-up-list)
 ;;                (global-set-key (kbd "<M-S-down>") 'down-list))))
+
+;; C-TAB move between buffers
+(global-set-key [(control tab)] 'other-window)
+
+;; Change font size
+(define-key global-map (kbd "C-+") 'text-scale-increase)
+(define-key global-map (kbd "C--") 'text-scale-decrease)
 
 ;;----------------------------------------------------------------------
 ;; My functions.
@@ -409,7 +469,7 @@
   :init
   (progn
     (setq-default ess-dialect "R")
-    (setq-default inferior-R-args "--no-restore-history --no-save ")
+    ;; (setq-default inferior-R-args "--no-restore-history --no-save ")
     ;; (setq inferior-ess-r-program "/home/walmes/anaconda3/bin/R")
     (setq ess-indent-with-fancy-comments nil
           comint-scroll-to-bottom-on-input t
