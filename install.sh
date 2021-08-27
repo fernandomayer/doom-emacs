@@ -48,5 +48,8 @@ git clone git@github.com:fernandomayer/doom-emacs.git ~/.doom.d/
 # Requirements for `(cc +lsp)` module.
 # sudo apt-get install clangd-10
 
+# Doom external dependencies
+sudo pacman -S fd shellcheck ripgrep
+
 # Requirements for `ess` module.
 Rscript -e 'install.packages(c("lintr", "languageserver"), dependencies = TRUE)'
