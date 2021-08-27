@@ -49,11 +49,11 @@
 ;; xlfd font string. You generally only need these two:
 (setq doom-font
       (font-spec :family "Fira Mono"
-                 :size 17
+                 :size 18
                  :weight 'semi-light)
       doom-variable-pitch-font
       (font-spec :family "Fira Sans"
-                 :size 13))
+                 :size 14))
 
 ;; (setq doom-font (font-spec :family "JetBrains Mono" :size 24)
 ;;       doom-big-font (font-spec :family "JetBrains Mono" :size 36)
@@ -119,13 +119,15 @@
 (setq tab-always-indent t)
 (setq-default indent-tabs-mode nil) ;; Spaces to indent.
 (setq-default fill-column 72)       ;; Column width.
+(setq-default auto-fill-function 'do-auto-fill)
+(add-hook 'ess-mode-hook #'auto-fill-mode)
 (setq-default kill-ring-max 2)      ;; Clipboard stores less to save mem
 (setq-default major-mode 'markdown-mode) ;; Start markdown rather then fundamental
 
 ;; Highlight whitespace.
 (global-whitespace-mode +1)
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
-(setq whitespace-line-column fill-column)
+;; (setq whitespace-line-column fill-column)
 (setq whitespace-style '(face lines-tail trailing tabs empty))
 
 ;; (setq doom-variable-pitch-font

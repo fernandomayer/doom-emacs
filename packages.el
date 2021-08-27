@@ -63,6 +63,8 @@
 (package! imenu-list)
 (package! auctex)
 (package! ess-view-data)
+(package! fill-column-indicator)
+
 
 (package! bookmark+
   :recipe (:host github
