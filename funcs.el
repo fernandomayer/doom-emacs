@@ -502,6 +502,23 @@
                (setq done t)))))
     (unhighlight-regexp rgxp)))
 
+
+(defun add-pipe-magrittr ()
+  (interactive)
+  (end-of-line)
+  (unless (looking-back "%>%" nil)
+    (just-one-space 1)
+    (insert "%>%"))
+  (newline-and-indent))
+
+(defun add-pipe-native ()
+  (interactive)
+  (end-of-line)
+  (unless (looking-back "|>" nil)
+    (just-one-space 1)
+    (insert "|>"))
+  (newline-and-indent))
+
 ;;----------------------------------------------------------------------
 ;; Function based in the bm-bookmark-regexp-region.
 ;; This function bookmark all chunks in *.Rnw and *.Rmd buffers.
@@ -619,7 +636,7 @@
         (setq string (buffer-substring-no-properties (point) end))))
     (delete-region beg end)
     (insert string)
-    (delete-char -2)))
+    (delete-char -1)))
 
 (defun wz-ess-open-html-documentation (beg end)
   "TODO. By Walmes Zeviani."
@@ -765,6 +782,8 @@
    (local-set-key (kbd "C-:")     'wz-ess-find-and-insert-namespace)
    (local-set-key (kbd "<S-f9>")  'wz-ess-backward-R-assigment-symbol)
    (local-set-key (kbd "<S-f10>") 'wz-ess-forward-R-assigment-symbol)
+   (local-set-key (kbd "M-p")     'add-pipe-magrittr)
+   (local-set-key (kbd "M-o")     'add-pipe-native)
    ;; (local-set-key (kbd "C-c C-h") 'ess-edit-indent-call-sophisticatedly)
    (local-set-key (kbd "C-|")
                   'ess-indent-region-with-formatR-tidy-source)
