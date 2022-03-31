@@ -112,6 +112,7 @@
 ;; (global-flycheck-mode -1)           ;; Turn off Flycheck.
 
 (setq column-number-mode t)         ;; Show cursor position.
+(setq column-number-indicator-zero-based nil) ; start column numbering at 1
 (setq auto-save-default nil)        ;; Turn off #autosave#.
 (setq make-backup-files nil)        ;; Turn off backup~.
 (setq comment-empty-lines t)        ;; Comment even in empty lines.
