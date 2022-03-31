@@ -109,7 +109,7 @@
 (recentf-mode 1)                    ;; List of recently opened files.
 (global-auto-revert-mode 1)         ;; Refresh buffer if file changes.
 
-;; (global-flycheck-mode -1)           ;; Turn off Flycheck.
+(global-flycheck-mode -1)           ;; Turn off Flycheck.
 
 (setq column-number-mode t)         ;; Show cursor position.
 (setq column-number-indicator-zero-based nil) ; start column numbering at 1
@@ -139,26 +139,37 @@
 (setq scroll-margin 5)
 
 (add-hook 'messages-buffer-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
 (add-hook 'comint-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
 (add-hook 'term-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
 (add-hook 'erc-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
 (add-hook 'inferior-ess-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
 (add-hook 'eshell-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
 (add-hook 'inferior-python-mode-hook
-                  (lambda ()
-                    (setq-local scroll-margin 0)))
+          (lambda ()
+            (setq-local scroll-margin 0)))
+
+;; (add-hook 'poly-markdown-mode
+;;           (lambda ()
+;;             (setq lsp-diagnostics-provider :none)))
+
+(add-hook 'markdown-mode-hook
+          '(lambda ()
+	     ;; Don't want flymake mode for ruby regions in rhtml files and also on read only files
+	     (if (and (not (null buffer-file-name)) (file-writable-p buffer-file-name))
+		 (flymake-mode))
+	     ))
 
 ;; (defun unset-scroll-margin () (setq-local scroll-margin 0))
 ;; (dolist (hook '(messages-buffer-mode-hook
