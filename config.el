@@ -164,6 +164,7 @@
 ;;           (lambda ()
 ;;             (setq lsp-diagnostics-provider :none)))
 
+;; https://gist.github.com/skoba/4708129
 (add-hook 'markdown-mode-hook
           '(lambda ()
 	     ;; Don't want flymake mode for ruby regions in rhtml files and also on read only files
