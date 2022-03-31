@@ -197,12 +197,12 @@
 ;;----------------------------------------------------------------------
 
 ;; C-z to 'undo, the default is C-/.
-(global-unset-key "\C-z")
-(global-set-key "\C-z" 'undo)
+;; (global-unset-key "\C-z")
+;; (global-set-key "\C-z" 'undo)
 
 ;; Uses C-/ to complete paths.
-(global-unset-key (kbd "C-/"))
-(global-set-key (kbd "C-/") 'company-files)
+;; (global-unset-key (kbd "C-/"))
+;; (global-set-key (kbd "C-/") 'company-files)
 
 ;; M-. to (un)comment paragraph.
 (global-set-key [?\M-.] (kbd "M-h M-; M-}"))
@@ -527,12 +527,12 @@
       ;; (setq ess-view-data-mode t)
       (flycheck-mode -1)        ;; Disable flycheck/lintr.
       (setq ess-smart-operators t)
-      (setq-local comment-add 0) ;; Single # as default.
+      (setq-local comment-add 1) ;; Single # as default.
       (ess-toggle-underscore nil)
       ;;
       ;; https://stackoverflow.com/questions/7502540/make-emacs-ess-follow-r-style-guide
-      ;; (ess-set-style 'C++)
-      (ess-set-style 'RStudio)
+      (ess-set-style 'C++)
+      ;; (ess-set-style 'RStudio)
       ;; (setq ess-offset-arguments 'prev-line)
       ;; (set 'ess-arg-function-offset t)
       ;;
@@ -649,39 +649,39 @@
 ;; Restart LSP:
 ;;   M-x lsp ...or... M-x lsp-restart-workspace
 
-(use-package! elpy
-  :init
-  (elpy-enable)
-  :config
-  (progn
-    (setq python-indent-offset 4)
-    (define-key python-mode-map [f5] 'company-complete)
-    (define-key python-mode-map [f6] 'complete-symbol)
-    ;; Elpy will install RPC dependencies automatically.
-    (setq elpy-rpc-python-command "/home/walmes/anaconda/bin/python3")
-    (setq python-shell-interpreter "/home/walmes/anaconda/bin/python3")
-    ))
+;; (use-package! elpy
+;;   :init
+;;   (elpy-enable)
+;;   :config
+;;   (progn
+;;     (setq python-indent-offset 4)
+;;     (define-key python-mode-map [f5] 'company-complete)
+;;     (define-key python-mode-map [f6] 'complete-symbol)
+;;     ;; Elpy will install RPC dependencies automatically.
+;;     (setq elpy-rpc-python-command "/home/walmes/anaconda/bin/python3")
+;;     (setq python-shell-interpreter "/home/walmes/anaconda/bin/python3")
+;;     ))
 
 ;; TODO FIXME: needs to understand this Env thing.
 ;; /home/walmes/anaconda/bin/python3
 
 ;; https://enzuru.medium.com/helpful-emacs-python-mode-hooks-especially-for-type-hinting-c4b70b9b2216
-(add-hook
- 'python-mode-hook
- (lambda ()
-   (anaconda-mode)
-   (anaconda-eldoc-mode)
-   (flycheck-mode nil)
-   (setq lsp-diagnostics-provider :none)
-   ;; This configures `pyls' language server.
-   (setq lsp-clients-python-command "/home/walmes/anaconda/bin/pyls")
-   (setq lsp-pyls-plugins-pylint-enabled t)
-   (setq lsp-pyls-plugins-autopep8-enabled nil)
-   (setq lsp-pyls-plugins-yapf-enabled t)
-   (setq lsp-pyls-plugins-pyflakes-enabled nil)
-   ;; (local-set-key (kbd "C-x C-d") 'anaconda-mode-show-doc)
-   ;; (local-set-key (kbd "C-x C-w") 'anaconda-mode-find-definitions)
-   ))
+;; (add-hook
+;;  'python-mode-hook
+;;  (lambda ()
+;;    (anaconda-mode)
+;;    (anaconda-eldoc-mode)
+;;    (flycheck-mode nil)
+;;    (setq lsp-diagnostics-provider :none)
+;;    ;; This configures `pyls' language server.
+;;    (setq lsp-clients-python-command "/home/walmes/anaconda/bin/pyls")
+;;    (setq lsp-pyls-plugins-pylint-enabled t)
+;;    (setq lsp-pyls-plugins-autopep8-enabled nil)
+;;    (setq lsp-pyls-plugins-yapf-enabled t)
+;;    (setq lsp-pyls-plugins-pyflakes-enabled nil)
+;;    ;; (local-set-key (kbd "C-x C-d") 'anaconda-mode-show-doc)
+;;    ;; (local-set-key (kbd "C-x C-w") 'anaconda-mode-find-definitions)
+;;    ))
 
 ;; (use-package! lsp-python-ms
 ;;   :config
