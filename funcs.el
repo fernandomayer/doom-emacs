@@ -106,45 +106,44 @@
   (let ((fill-column 90002000))
     (fill-region start end)))
 
-;;----------------------------------------------------------------------
-;; Commented rules to divide code.
-
-;; t in line is empty (oly whitespaces), nil otherwise.
-;; https://lists.gnu.org/archive/html/help-gnu-emacs/2015-11/msg00212.html
+;; Commented rules to divide code ======================================
 (defun blank-line-p ()
   (string-match "^[[:space:]]*$"
                 (buffer-substring-no-properties
                  (line-beginning-position)
-                 (line-end-position))))
+                 (line-end-position) )))
 
-(defun wz-insert-rule-from-point-to-margin (&optional char)
+(defun insert-rule-from-point-to-margin (&optional rule-char)
   "Insert a commented rule with dashes (-) from the `point' to
    the `fill-column' if the line has only spaces. If the line has
    text, fill with dashes until the `fill-column'. Useful to
-   divide your code in sections. If a non nil optional argument is
-   passed, then it is used instead."
+   divide your code in sections. If a non nil prefix argument is
+   passed, then (=) is used instead."
   (interactive)
   (if (blank-line-p)
-      (progn (insert "-")
-             (comment-line-or-region)
-             (delete-char -2))
+      (progn
+        (insert "-")
+        (comment-line-or-region)
+        (delete-char -2))
     nil)
-  (if char
-      (insert (make-string (- fill-column (current-column)) char))
-    (insert (make-string (- fill-column (current-column)) ?-))))
+  (if rule-char
+      (insert (make-string (- fill-column (current-column)) ?=))
+    (insert (make-string (- fill-column (current-column)) ?-)))
+  )
 
-(defun wz-insert-rule-and-comment-3 ()
+
+(defun insert-rule-and-comment-3 ()
   "Insert a commented rule with 43 dashes (-). Useful to divide
    your code in sections."
   (interactive)
-  (if (blank-line-p)
-      (progn (insert "-")
-             (comment-line-or-region)
-             (delete-char -2))
-    nil)
-  (let ((column-middle (floor (* 0.625 fill-column))))
-    (if (< (current-column) column-middle)
-        (insert (make-string (- column-middle (current-column)) ?-)))))
+  (insert (make-string 43 ?-))
+  (comment-or-uncomment-region
+   (line-beginning-position)
+   (line-beginning-position 2))
+  (backward-char 44)
+  (delete-char 1)
+  (move-end-of-line nil)
+  )
 
 ;;----------------------------------------------------------------------
 
@@ -519,6 +518,58 @@
     (insert "|>"))
   (newline-and-indent))
 
+(defun add-knitr-comment ()
+  (interactive)
+  (unless (looking-back "#| " nil)
+    (insert "#| ")))
+
+(defun wz-insert-chunk ()
+  "Insert chunk environment Rmd sessions."
+  (interactive)
+  (if (derived-mode-p 'ess-mode)
+      (insert "```\n\n```{r}\n")
+    (insert "```{r}\n\n```")
+    (forward-line -1)))
+
+;; Mark a word at a point ==============================================
+;; http://www.emacswiki.org/emacs/ess-edit.el
+(defun ess-edit-word-at-point ()
+  (save-excursion
+    (buffer-substring
+     (+ (point) (skip-chars-backward "a-zA-Z0-9._"))
+     (+ (point) (skip-chars-forward "a-zA-Z0-9._")))))
+;; eval any word where the cursor is (objects, functions, etc)
+(defun ess-eval-word ()
+  (interactive)
+  (let ((x (ess-edit-word-at-point)))
+    (ess-eval-linewise (concat x)))
+)
+
+;; Move lines ==========================================================
+;; http://www.emacswiki.org/emacs/MoveLine
+(defun move-line (n)
+  "Move the current line up or down by N lines."
+  (interactive "p")
+  (setq col (current-column))
+  (beginning-of-line) (setq start (point))
+  (end-of-line) (forward-char) (setq end (point))
+  (let ((line-text (delete-and-extract-region start end)))
+    (forward-line n)
+    (insert line-text)
+    ;; restore point to original column in moved line
+    (forward-line -1)
+    (forward-char col)))
+
+(defun move-line-up (n)
+  "Move the current line up by N lines."
+  (interactive "p")
+  (move-line (if (null n) -1 (- n))))
+
+(defun move-line-down (n)
+  "Move the current line down by N lines."
+  (interactive "p")
+  (move-line (if (null n) 1 n)))
+
 ;;----------------------------------------------------------------------
 ;; Function based in the bm-bookmark-regexp-region.
 ;; This function bookmark all chunks in *.Rnw and *.Rmd buffers.
@@ -742,6 +793,9 @@
 (define-key global-map (kbd "C-S-o") 'my-occur)
 (define-key occur-mode-map (kbd "q") 'occur-mode-quit)
 
+(global-set-key (kbd "M-[") 'move-line-up)
+(global-set-key (kbd "M-]") 'move-line-down)
+
 (global-set-key (kbd "S-<delete>") 'cut-line-or-region)  ; cut.
 (global-set-key (kbd "C-<insert>") 'copy-line-or-region) ; copy.
 (global-set-key (kbd "C-c d") 'duplicate-line)
@@ -749,12 +803,20 @@
 (global-set-key (kbd "C-x t") 'open-shell-split-window)
 (global-set-key (kbd "M-;") 'comment-line-or-region)
 (global-set-key (kbd "C-ç") 'camel-dot-snake)
-(global-set-key (kbd "C-c -") 'wz-insert-rule-from-point-to-margin)
-(global-set-key (kbd "C-M--") 'wz-insert-rule-and-comment-3)
-(global-set-key (kbd "C-c =")
+;; (global-set-key (kbd "C-c -") 'wz-insert-rule-from-point-to-margin)
+;; (global-set-key (kbd "C-M--") 'wz-insert-rule-and-comment-3)
+;; (global-set-key (kbd "C-c =")
+;;                 (lambda ()
+;;                   (interactive)
+;;                   (wz-insert-rule-from-point-to-margin ?=)))
+
+(global-set-key [?\C-\M--] 'insert-rule-from-point-to-margin)
+(global-set-key [?\C-\M-=]
                 (lambda ()
                   (interactive)
-                  (wz-insert-rule-from-point-to-margin ?=)))
+                  (insert-rule-from-point-to-margin 1)))
+(global-set-key [?\C--] 'insert-rule-and-comment-3)
+
 
 (add-hook
  'markdown-mode-hook
@@ -769,6 +831,7 @@
  'ess-mode-hook
  (lambda ()
    (local-set-key (kbd "C-c i i") 'wz-insert-chunk)
+   (local-set-key (kbd "C-c i c") 'add-knitr-comment)
    (local-set-key (kbd "<C-f1>")  'wz-ess-open-html-documentation)
    (local-set-key (kbd "<f6>")    'wz-polymode-eval-R-chunk)
    (local-set-key (kbd "<f7>")    'wz-ess-break-or-join-lines-wizard)
